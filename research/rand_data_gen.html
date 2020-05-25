@@ -1,0 +1,16 @@
+<script type="module">
+    import { get_score, create_rand_array } from '../captcha.js'
+
+    var scores = []
+
+    for (var i = 0; i < 1000000; i++) {
+        scores.push(get_score(create_rand_array(100)))
+    }
+
+    var a = document.createElement('a')
+    var file = new Blob([ scores.toString() ], { type: 'text/plain' })
+
+    a.href = URL.createObjectURL(file)
+    a.download = 'scores'
+    a.click()
+</script>

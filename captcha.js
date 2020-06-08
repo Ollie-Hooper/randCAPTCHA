@@ -1,12 +1,12 @@
-function get_count(input) {
+function get_count(input, n) {
 	var count = []
 	var counter = 0
 
 	for (var i in input) {
-		if (input.charAt(i) == '1' && i != input.length - 1) {
+		if (input.charAt(i) == n && i != input.length - 1) {
 			counter++
 		} else {
-			if (input.charAt(i) == '1') {
+			if (input.charAt(i) == n) {
 				counter++
 			}
 			if (counter > 0) {
@@ -24,14 +24,14 @@ function get_count(input) {
 	return count
 }
 
-function calc_score(count, n) {
+function calc_score(count, l) {
 	var expected = []
 	var difference = []
 	var diff = 0
 
 	for (var i = 0; i < count.length; i++) {
 		var k = i + 1
-		var x = n * Math.pow(1 / 2, k + 2)
+		var x = l * Math.pow(1 / 2, k + 2)
 		expected.push(x)
 		var d = x - count[i]
 		difference.push(d)
@@ -41,11 +41,25 @@ function calc_score(count, n) {
 	return diff
 }
 
+function max_abs(a) {
+	var max = Math.max(...a)
+	var min = Math.min(...a)
+	if (Math.abs(max) > Math.abs(min)) {
+		return max
+	} else {
+		return min
+	}
+}
+
 export function get_score(input) {
 	input = input.replace(/\s/g, '')
-	var n = input.length
-	var count = get_count(input)
-	return calc_score(count, n)
+	var l = input.length
+	var scores = []
+	for (var n in ['0', '1']) {
+		var count = get_count(input, n)
+		scores.push(calc_score(count, l))
+	}
+	return max_abs(scores)
 }
 
 export function is_human(input) {
